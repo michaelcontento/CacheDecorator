@@ -100,15 +100,6 @@ class CacheDecorator
      * @param array $arguments
      * @return mixed
      */
-    private function callWrappedObject($name, array $arguments) 
-    {
-    }
-
-    /**
-     * @param string $name
-     * @param array $arguments
-     * @return mixed
-     */
     public function __call($name, array $arguments) 
     {
         $object = $this->object;
