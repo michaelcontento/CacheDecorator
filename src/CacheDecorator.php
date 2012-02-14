@@ -87,7 +87,7 @@ class CacheDecorator
             $result = $callback(); 
 
             try {
-                $this->cache->set($key, $result, $this->lifetime);
+                $this->cache->set($key, $result);
             } catch (Exception $e) {
             }
         }

@@ -11,7 +11,7 @@ class MemoryCache implements CacheInterface
     /**
      * @var array
      */
-    public $store = array();
+    private $store = array();
 
     /**
      * @param string $key
