@@ -10,7 +10,7 @@ class Cake
     /**
      * @return mixed
      */
-    public static $nextResult = false;
+    public static $nextResult;
 
     /**
      * @param string $key
@@ -37,26 +37,31 @@ class Cake
 
 class CakePhpCacheTest extends PHPUnit_Framework_TestCase
 {
-    public function validCacheResults()
+    /**
+     * @return array
+     */
+    public function validDataProvider()
     {
         return array(
-            array("string"),
-            array(1),
-            array(1.2),
-            array(new stdClass()),
-            array(true)
+            array("string", "foo"),
+            array("int", 1),
+            array("float", 1.2),
+            array("array", array()),
+            array("object", new stdClass()),
+            array("true", true),
+            array("null", null)
         );
     }
 
     /**
-     * @dataProvider validCacheResults
+     * @dataProvider validDataProvider
      */
-    public function testGet($result)
+    public function testGet($key, $result)
     {
         $cache = new CakePhpCache();
 
         Cake::$nextResult = $result;
-        $this->assertEquals($result, $cache->get("key"));
+        $this->assertEquals($result, $cache->get($key));
     }
 
     public function testCacheExceptionOnFalseResult()
@@ -70,7 +75,6 @@ class CakePhpCacheTest extends PHPUnit_Framework_TestCase
 
     public function testShouldPassTheKeyOnGet()
     {
-        Cake::$nextResult = true;
         $cache = new CakePhpCache();
         $cache->get("key");
 
@@ -96,7 +100,6 @@ class CakePhpCacheTest extends PHPUnit_Framework_TestCase
 
     public function testShouldPassTheConfigOnGet()
     {
-        Cake::$nextResult = true;
         $cache = new CakePhpCache("config");
         $cache->get("key");
 

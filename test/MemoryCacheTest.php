@@ -2,6 +2,11 @@
 
 class MemoryCacheTest extends PHPUnit_Framework_TestCase
 {
+    public function testImplementsCacheInterface() 
+    {
+        $this->assertInstanceOf("CacheInterface", new MemoryCache());
+    }
+
     /**
      * @return array
      */
@@ -11,14 +16,12 @@ class MemoryCacheTest extends PHPUnit_Framework_TestCase
             array("string", "foo"),
             array("int", 1),
             array("float", 1.2),
-            array("array", array(1)),
-            array("object", new stdClass())
+            array("array", array()),
+            array("object", new stdClass()),
+            array("true", true),
+            array("false", false),
+            array("null", null)
         );
-    }
-
-    public function testImplementsCacheInterface() 
-    {
-        $this->assertInstanceOf("CacheInterface", new MemoryCache());
     }
 
     /**

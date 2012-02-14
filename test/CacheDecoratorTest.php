@@ -25,20 +25,31 @@ class CacheDecoratorTest extends PHPUnit_Framework_TestCase
         return $this->getMockForAbstractClass("CacheInterface");
     }
 
+    /**
+     * @return CacheDecoratorTest
+     */
     private function prepareCacheMiss()
     {
         $this->cache
             ->expects($this->once())
             ->method("get")
             ->will($this->throwException(new CacheException()));
+
+        return $this;
     }
 
+    /**
+     * @param mixed $result
+     * @return CacheDecoratorTest
+     */
     private function prepareCacheHit($result)
     {
         $this->cache
             ->expects($this->once())
             ->method("get")
             ->will($this->returnValue($result));
+
+        return $this;
     }
 
     public function setUp()
@@ -57,8 +68,20 @@ class CacheDecoratorTest extends PHPUnit_Framework_TestCase
             array("string"),
             array(1),
             array(1.2),
-            array(array())
+            array(array()),
+            array(true),
+            array(false),
+            array(null)
         );
+    }
+
+    /**
+     * @dataProvider invalidObjectArguments 
+     * @expectedException InvalidArgumentException
+     */
+    public function testExceptionOnInvalidObjectArgument($object) 
+    {
+        new CacheDecorator($object, $this->getCacheMock());
     }
 
     /**
@@ -70,17 +93,11 @@ class CacheDecoratorTest extends PHPUnit_Framework_TestCase
             array(1),
             array(1.2),
             array(array()),
-            array(new stdClass())
+            array(new stdClass()),
+            array(true),
+            array(false),
+            array(null)
         );
-    }
-
-    /**
-     * @dataProvider invalidObjectArguments 
-     * @expectedException InvalidArgumentException
-     */
-    public function testExceptionOnInvalidObjectArgument($object) 
-    {
-        new CacheDecorator($object, $this->getCacheMock());
     }
 
     /**
