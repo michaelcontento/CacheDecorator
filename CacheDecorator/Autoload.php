@@ -1,7 +1,7 @@
 <?php
 
 spl_autoload_register(function($class) {
-    $file = __DIR__ . "/src/" . str_replace("/", "_", $class) . ".php";
+    $file = __DIR__ . "/../CacheDecorator/" . str_replace("/", "_", $class) . ".php";
     if (file_exists($file)) {
         require $file;
     }
