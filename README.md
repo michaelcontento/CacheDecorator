@@ -1,5 +1,7 @@
 # [CacheDecorator][]
 
+[![Build Status](https://secure.travis-ci.org/michaelcontento/CacheDecorator.png)](http://travis-ci.org/michaelcontento/CacheDecorator)
+
 ## About
 
 
