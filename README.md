@@ -4,6 +4,22 @@
 
 ## About
 
+Very simple caching decorator for nearly every PHP object. Everything is routed
+to your original object (read: all magic methods like `__set`, `__get`, 
+`__isset`, etc. are implemented) but all consecutive calls to `__get` and 
+`__call` are cached. 
+
+## Example
+
+    <?php
+
+    // Will run for 7.5 million years (every time!)
+    $dt = new DeepThought();
+    echo $dt->answerToTheUltimateQuestionOfLifeTheUniverseAndEverything();
+    
+    // Should be less than 7.5 million years ;)
+    $fastDt = new CacheDecorator($dt, new MemoryCache());
+    echo $fastDt->answerToTheUltimateQuestionOfLifeTheUniverseAndEverything();
 
 ## License
 
