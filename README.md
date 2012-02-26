@@ -5,9 +5,7 @@
 ## About
 
 Very simple caching decorator for nearly every PHP object. Everything is routed
-to your original object (read: all magic methods like `__set`, `__get`, 
-`__isset`, etc. are implemented) but all consecutive calls to `__get` and 
-`__call` are cached. 
+to your original object, but only once for each method and argument combination.
 
 ## Example
 

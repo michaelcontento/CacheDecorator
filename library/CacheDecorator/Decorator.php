@@ -140,7 +140,13 @@ class Decorator
      */
     public function __set($name, $value) 
     {
-        $this->object->$name = $value;
+        $object = $this->object;
+        return $this->readThroughCache(
+            $this->getCacheKey("__set", array($name)), 
+            function() use ($object, $name, $value) {
+                $object->$name = $value; 
+            }
+        );
     }
 
     /**
@@ -149,7 +155,13 @@ class Decorator
      */
     public function __isset($name) 
     {
-        return isset($this->object->$name);
+        $object = $this->object;
+        return $this->readThroughCache(
+            $this->getCacheKey("__isset", array($name)), 
+            function() use ($object, $name) {
+                return isset($object->$name);
+            }
+        );
     }
 
     /**
@@ -158,6 +170,12 @@ class Decorator
      */
     public function __unset($name) 
     {
-        unset($this->object->$name);
+        $object = $this->object;
+        return $this->readThroughCache(
+            $this->getCacheKey("__unset", array($name)), 
+            function() use ($object, $name) {
+                unset($object->$name);
+            }
+        );
     }
 }

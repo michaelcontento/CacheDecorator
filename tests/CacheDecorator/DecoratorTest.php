@@ -118,10 +118,18 @@ class DecoratorTest extends \PHPUnit_Framework_TestCase
         new Decorator(new \stdClass(), $this->getCacheMock(), $prefix);
     }
 
-    public function testShouldPassMagicSet()
+    public function testShouldPassMagicSetOnCacheMiss()
     {
+        $this->prepareCacheMiss();
         $this->decorator->__set("key", "foo");
         $this->assertEquals("foo", $this->object->key);
+    }
+
+    public function testSetShouldNotPassedMagicSetOnCacheHits()
+    {
+        $this->prepareCacheHit("result unused");
+        $this->decorator->__set("key", "bar");
+        $this->assertFalse(isset($this->object->key));
     }
 
     public function testMagicSetShouldReturnNull()
@@ -129,17 +137,33 @@ class DecoratorTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($this->decorator->__set("key", "foo"));
     }
 
-    public function testShouldPassMagicIsset()
+    public function testShouldPassMagicIssetOnCacheMiss()
     {
+        $this->prepareCacheMiss();
         $this->object->key = true; 
         $this->assertTrue($this->decorator->__isset("key"));
     }
 
-    public function testShouldPassMagicUnset()
+    public function testShouldNotPassMagicIssetOnCacheHit()
     {
+        $this->prepareCacheHit(true);
+        $this->assertTrue($this->decorator->__isset("key"));
+    }
+
+    public function testShouldPassMagicUnsetOnCacheMiss()
+    {
+        $this->prepareCacheMiss();
         $this->object->key = true; 
         $this->decorator->__unset("key");
         $this->assertFalse(isset($this->object->key));
+    }
+
+    public function testShouldNotPassMagicUnsetOnCacheHit()
+    {
+        $this->prepareCacheHit("result unused");
+        $this->object->key = true; 
+        $this->decorator->__unset("key");
+        $this->assertTrue(isset($this->object->key));
     }
 
     public function testMagicUnsetShouldReturnNull()
