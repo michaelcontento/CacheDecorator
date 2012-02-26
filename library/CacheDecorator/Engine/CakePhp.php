@@ -1,12 +1,16 @@
 <?php
 
+namespace CacheDecorator\Engine;
+
+use Cake;
+
 /**
  * Bridge between the static Cache component of CakePHP and the CacheInterface.
  *
  * @author Michael Contento <michaelcontento@gmail.com>
  * @see    https://github.com/michaelcontento/CacheDecorator
  */
-class CakePhpCache implements CacheInterface
+class CakePhp implements Adapter 
 {
     /**
      * @var string
@@ -15,7 +19,7 @@ class CakePhpCache implements CacheInterface
 
     /**
      * @param string $config
-     * @return CakePhpCache
+     * @return CakePhp
      */
     public function __construct($config = null) 
     {
@@ -30,7 +34,7 @@ class CakePhpCache implements CacheInterface
     {
         $result = Cake::read($key, $this->config);
         if ($result === false) {
-            throw new CacheException("Cache miss for key '$key'.");
+            throw new Exception("Cache miss for key '$key'.");
         }
 
         return $result;

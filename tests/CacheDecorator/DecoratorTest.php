@@ -1,46 +1,51 @@
 <?php
 
-class CacheDecoratorTest extends PHPUnit_Framework_TestCase
+namespace CacheDecorator;
+
+use CacheDecorator\Decorator,
+    CacheDecorator\Engine\Adapter;
+
+class DecoratorTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var stdClass
+     * @var \stdClass
      */
     private $object;
 
     /**
-     * @var CacheInterface
+     * @var Adapter
      */
     private $cache;
     
     /**
-     * @var CacheDecorator
+     * @var Decorator
      */
     private $decorator;
 
     /**
-     * @return CacheInterface
+     * @return Adapter
      */
     private function getCacheMock()
     {
-        return $this->getMockForAbstractClass("CacheInterface");
+        return $this->getMock("CacheDecorator\Engine\Adapter");
     }
 
     /**
-     * @return CacheDecoratorTest
+     * @return DecoratorTest
      */
     private function prepareCacheMiss()
     {
         $this->cache
             ->expects($this->once())
             ->method("get")
-            ->will($this->throwException(new CacheException()));
+            ->will($this->throwException(new Engine\Exception()));
 
         return $this;
     }
 
     /**
      * @param mixed $result
-     * @return CacheDecoratorTest
+     * @return DecoratorTest
      */
     private function prepareCacheHit($result)
     {
@@ -54,9 +59,9 @@ class CacheDecoratorTest extends PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->object = new stdClass();
+        $this->object = new \stdClass();
         $this->cache = $this->getCacheMock();
-        $this->decorator = new CacheDecorator($this->object, $this->cache);
+        $this->decorator = new Decorator($this->object, $this->cache);
     }
 
     /**
@@ -77,11 +82,11 @@ class CacheDecoratorTest extends PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider invalidObjectArguments 
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testExceptionOnInvalidObjectArgument($object) 
     {
-        new CacheDecorator($object, $this->getCacheMock());
+        new Decorator($object, $this->getCacheMock());
     }
 
     /**
@@ -93,7 +98,7 @@ class CacheDecoratorTest extends PHPUnit_Framework_TestCase
             array(1),
             array(1.2),
             array(array()),
-            array(new stdClass()),
+            array(new \stdClass()),
             array(true),
             array(false),
             array(null)
@@ -102,11 +107,11 @@ class CacheDecoratorTest extends PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider invalidPrefixArguments
-     * @expectedException InvalidArgumentException
+     * @expectedException \InvalidArgumentException
      */
     public function testExceptionOnInvalidPrefixArgument($prefix)
     {
-        new CacheDecorator(new stdClass(), $this->getCacheMock(), $prefix);
+        new Decorator(new \stdClass(), $this->getCacheMock(), $prefix);
     }
 
     public function testShouldPassMagicSet()
@@ -172,7 +177,7 @@ class CacheDecoratorTest extends PHPUnit_Framework_TestCase
         $this->cache
             ->expects($this->once())
             ->method("set")
-            ->will($this->throwException(new Exception()));
+            ->will($this->throwException(new \Exception()));
 
         $this->object->key = "foo";
         $this->assertEquals("foo", $this->decorator->__get("key"));

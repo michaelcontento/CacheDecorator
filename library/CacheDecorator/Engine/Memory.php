@@ -1,12 +1,14 @@
 <?php
 
+namespace CacheDecorator\Engine;
+
 /**
  * Very simple in-memory cache.
  *
  * @author Michael Contento <michaelcontento@gmail.com>
  * @see    https://github.com/michaelcontento/CacheDecorator
  */
-class MemoryCache implements CacheInterface
+class Memory implements Adapter
 {
     /**
      * @var array
@@ -20,7 +22,7 @@ class MemoryCache implements CacheInterface
     public function get($key) 
     {
         if (!array_key_exists($key, $this->store)) {
-            throw new CacheException("Cache miss for key '$key'.");
+            throw new Exception("Cache miss for key '$key'.");
         }
 
         return $this->store[$key];

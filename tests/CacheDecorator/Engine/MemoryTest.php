@@ -1,10 +1,12 @@
 <?php
 
-class MemoryCacheTest extends PHPUnit_Framework_TestCase
+namespace CacheDecorator\Engine;
+
+class MemoryTest extends \PHPUnit_Framework_TestCase
 {
-    public function testImplementsCacheInterface() 
+    public function testImplementsAdapter() 
     {
-        $this->assertInstanceOf("CacheInterface", new MemoryCache());
+        $this->assertInstanceOf("CacheDecorator\Engine\Adapter", new Memory());
     }
 
     /**
@@ -17,7 +19,7 @@ class MemoryCacheTest extends PHPUnit_Framework_TestCase
             array("int", 1),
             array("float", 1.2),
             array("array", array()),
-            array("object", new stdClass()),
+            array("object", new \stdClass()),
             array("true", true),
             array("false", false),
             array("null", null)
@@ -29,21 +31,21 @@ class MemoryCacheTest extends PHPUnit_Framework_TestCase
      */
     public function testSetAndGet($key, $value) 
     {
-        $cache = new MemoryCache();
+        $cache = new Memory();
         $cache->set($key, $value);
         $this->assertEquals($value, $cache->get($key));
     }
 
     public function testSetReturnsNothing() 
     {
-        $cache = new MemoryCache();
+        $cache = new Memory();
         $this->assertNull($cache->set("key", "value"));
     }
 
     public function testExceptionOnCacheMiss()
     {
-        $cache = new MemoryCache();
-        $this->setExpectedException("CacheException");
+        $cache = new Memory();
+        $this->setExpectedException("CacheDecorator\Engine\Exception");
         $cache->get("invalid");
     }
 }

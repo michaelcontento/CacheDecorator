@@ -1,15 +1,17 @@
 <?php
 
+namespace CacheDecorator\Engine;
+
 /**
  * Interface all cached must fulfill to work with CacheDecorator.
  *
  * @author Michael Contento <michaelcontento@gmail.com>
  * @see    https://github.com/michaelcontento/CacheDecorator
  */
-interface CacheInterface
+interface Adapter
 {
     /**
-     * @throws CacheException on cache miss 
+     * @throws Exception on cache miss 
      * @param string $key
      * @return mixed
      */

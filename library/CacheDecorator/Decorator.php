@@ -1,12 +1,16 @@
 <?php
 
+namespace CacheDecorator;
+
+use Engine\Adapter;
+
 /**
  * Very simple caching decorator for all PHP objects.
  *
  * @author Michael Contento <michaelcontento@gmail.com>
  * @see    https://github.com/michaelcontento/CacheDecorator
  */
-class CacheDecorator 
+class Decorator 
 {
     /**
      * @var string
@@ -14,7 +18,7 @@ class CacheDecorator
     private $prefix = '';
 
     /**
-     * @var CacheInterface 
+     * @var Adapter 
      */
     private $cache;
 
@@ -30,20 +34,20 @@ class CacheDecorator
 
     /**
      * @param mixed $object
-     * @param CacheInterface $cache
+     * @param Adapter $cache
      * @param string $prefix
-     * @return CacheDecorator
+     * @return Decorator
      */
-    public function __construct($object, CacheInterface $cache, $prefix = "") 
+    public function __construct($object, $cache, $prefix = "") 
     {
         if (!is_object($object)) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 "Object argument must be a valid object instance"
             );
         }
     
         if (!is_string($prefix)) {
-            throw new InvalidArgumentException(
+            throw new \InvalidArgumentException(
                 "Prefix argument must be a string."
             );
         }
@@ -76,19 +80,19 @@ class CacheDecorator
 
     /**
      * @param string $key
-     * @param Closure $callback
+     * @param \Closure $callback
      * @return mixed
      */
-    private function readThroughCache($key, Closure $callback) 
+    private function readThroughCache($key, \Closure $callback) 
     {
         try {
             $result = $this->cache->get($key);
-        } catch (CacheException $e) {
+        } catch (Engine\Exception $e) {
             $result = $callback(); 
 
             try {
                 $this->cache->set($key, $result);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
             }
         }
 

@@ -8,12 +8,13 @@
          stopOnFailure="true"
          stopOnIncomplete="false"
          stopOnSkipped="false"
-         bootstrap="CacheDecorator/Autoload.php"
+         bootstrap="tests/Bootstrap.php"
          strict="true"
          verbose="true">
+
     <testsuites>
         <testsuite name="CacheDecorator">
-            <directory>Tests</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
 
@@ -29,14 +30,11 @@
 
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">CacheDecorator</directory>
-            <exclude>
-                <file>CacheDecorator/Autoload.php</file>
-            </exclude>
+            <directory suffix=".php">library</directory>
         </whitelist>
     </filter>
 
     <php>
-        <includePath>CacheDecorator</includePath>
+        <includePath>library</includePath>
     </php>
 </phpunit>

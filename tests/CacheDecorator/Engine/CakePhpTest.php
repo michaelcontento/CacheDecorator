@@ -1,42 +1,20 @@
 <?php
 
-class Cake
+namespace CacheDecorator\Engine;
+
+// For this tests we now load our own simple implementation of the static
+// Cake class. It's a mocked version that allows us to check the call stack and
+// define the result for all following calls to read().
+require __DIR__ . "/__files/Cake.php";
+use Cake;
+
+class CakePhpTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @var array
-     */
-    public static $stack = array();
-
-    /**
-     * @return mixed
-     */
-    public static $nextResult;
-
-    /**
-     * @param string $key
-     * @param mixed $config
-     * @return mixed 
-     */
-    public static function read($key, $config)
+    public function testImplementsAdapter() 
     {
-        self::$stack[] = array("get", $key, $config);
-        return self::$nextResult;
+        $this->assertInstanceOf("CacheDecorator\Engine\Adapter", new Memory());
     }
 
-    /**
-     * @param string $key
-     * @param mixed $value
-     * @param mixed $config
-     * @return void
-     */
-    public static function write($key, $value, $config)
-    {
-        self::$stack[] = array("set", $key, $value, $config);
-    }
-}
-
-class CakePhpCacheTest extends PHPUnit_Framework_TestCase
-{
     /**
      * @return array
      */
@@ -47,7 +25,7 @@ class CakePhpCacheTest extends PHPUnit_Framework_TestCase
             array("int", 1),
             array("float", 1.2),
             array("array", array()),
-            array("object", new stdClass()),
+            array("object", new \stdClass()),
             array("true", true),
             array("null", null)
         );
@@ -58,7 +36,7 @@ class CakePhpCacheTest extends PHPUnit_Framework_TestCase
      */
     public function testGet($key, $result)
     {
-        $cache = new CakePhpCache();
+        $cache = new CakePhp();
 
         Cake::$nextResult = $result;
         $this->assertEquals($result, $cache->get($key));
@@ -67,15 +45,15 @@ class CakePhpCacheTest extends PHPUnit_Framework_TestCase
     public function testCacheExceptionOnFalseResult()
     {
         Cake::$nextResult = false;
-        $cache = new CakePhpCache();
+        $cache = new CakePhp();
 
-        $this->setExpectedException("CacheException");
+        $this->setExpectedException("CacheDecorator\Engine\Exception");
         $cache->get("key");
     }
 
     public function testShouldPassTheKeyOnGet()
     {
-        $cache = new CakePhpCache();
+        $cache = new CakePhp();
         $cache->get("key");
 
         $this->assertCount(1, Cake::$stack);
@@ -87,7 +65,7 @@ class CakePhpCacheTest extends PHPUnit_Framework_TestCase
 
     public function testShouldPassTheKeyAndValueOnSet()
     {
-        $cache = new CakePhpCache();
+        $cache = new CakePhp();
         $cache->set("key", "value");
 
         $this->assertCount(1, Cake::$stack);
@@ -100,7 +78,7 @@ class CakePhpCacheTest extends PHPUnit_Framework_TestCase
 
     public function testShouldPassTheConfigOnGet()
     {
-        $cache = new CakePhpCache("config");
+        $cache = new CakePhp("config");
         $cache->get("key");
 
         $this->assertCount(1, Cake::$stack);
@@ -111,7 +89,7 @@ class CakePhpCacheTest extends PHPUnit_Framework_TestCase
 
     public function testShouldPassTheConfigOnSet()
     {
-        $cache = new CakePhpCache("config");
+        $cache = new CakePhp("config");
         $cache->set("key", "value");
 
         $this->assertCount(1, Cake::$stack);

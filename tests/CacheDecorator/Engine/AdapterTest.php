@@ -1,19 +1,21 @@
 <?php
 
-class CacheInterfaceTest extends PHPUnit_Framework_TestCase
+namespace CacheDecorator\Engine;
+
+class AdapterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var CacheInterface
+     * @var Adapter
      */
     private $interface;
 
     public function setUp()
     {
-        $this->interface = $this->getMockForAbstractClass("CacheInterface");
+        $this->interface = $this->getMock("CacheDecorator\Engine\Adapter");
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Error
+     * @expectedException \PHPUnit_Framework_Error
      */
     public function testErrorOnGetWithZeroArguments() 
     {
@@ -27,7 +29,7 @@ class CacheInterfaceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Error
+     * @expectedException \PHPUnit_Framework_Error
      */
     public function testErrorOnSetWithZeroArguments() 
     {
@@ -35,7 +37,7 @@ class CacheInterfaceTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException PHPUnit_Framework_Error
+     * @expectedException \PHPUnit_Framework_Error
      */
     public function testErrorOnSetWithOnlyOneArgument()
     {
