@@ -1,5 +1,11 @@
 <?php
 
+/** 
+ * Testable version of the static Cake class from the CakePHP Framework.
+ *
+ * @author Michael Contento <michaelcontento@gmail.com>
+ * @see    https://github.com/michaelcontento/CacheDecorator
+ */
 class Cake
 {
     /**

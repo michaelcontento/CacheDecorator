@@ -5,6 +5,10 @@ namespace CacheDecorator;
 use CacheDecorator\Decorator,
     CacheDecorator\Engine\Adapter;
 
+/** 
+ * @author Michael Contento <michaelcontento@gmail.com>
+ * @see    https://github.com/michaelcontento/CacheDecorator
+ */
 class DecoratorTest extends \PHPUnit_Framework_TestCase
 {
     /**

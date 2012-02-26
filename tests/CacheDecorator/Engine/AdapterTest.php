@@ -2,6 +2,10 @@
 
 namespace CacheDecorator\Engine;
 
+/** 
+ * @author Michael Contento <michaelcontento@gmail.com>
+ * @see    https://github.com/michaelcontento/CacheDecorator
+ */
 class AdapterTest extends \PHPUnit_Framework_TestCase
 {
     /**

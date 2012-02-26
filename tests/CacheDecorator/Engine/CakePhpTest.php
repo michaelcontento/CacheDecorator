@@ -8,6 +8,10 @@ namespace CacheDecorator\Engine;
 require __DIR__ . "/__files/Cake.php";
 use Cake;
 
+/** 
+ * @author Michael Contento <michaelcontento@gmail.com>
+ * @see    https://github.com/michaelcontento/CacheDecorator
+ */
 class CakePhpTest extends \PHPUnit_Framework_TestCase
 {
     public function testImplementsAdapter() 
