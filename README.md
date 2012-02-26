@@ -35,9 +35,8 @@ to your original object, but only once for each method and argument combination.
 * Install [PHPUnit][]
     * `pear config-set auto_discover 1`
     * `pear install pear.phpunit.de/PHPUnit`
-* Install [Composer][]
+* Install [Composer][] and all other dependencies
     * `wget http://getcomposer.org/composer.phar`
-* Let [Composer][] install all dependencies
     * `php composer.phar install`
 * And finally run [PHPUnit][]
     * `phpunit`
