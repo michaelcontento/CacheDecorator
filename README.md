@@ -20,6 +20,28 @@ to your original object, but only once for each method and argument combination.
     $fastDt = new CacheDecorator\Decorator($dt, $cache);
     echo $fastDt->answerToTheUltimateQuestionOfLifeTheUniverseAndEverything();
 
+## TODOs
+
+* Cache the output of method calls
+* Implement caching for `__toString`
+* Implement caching for `__invoke`
+* Implement caching for `__set_state`
+* Define and implement handling for `__clone` 
+* Define and implement handling of `__destruct`
+* Define and implement handling of `__sleep` and `__wakeup`
+
+## Get the tests running
+
+* Install [PHPUnit][]
+    * `pear config-set auto_discover 1`
+    * `pear install pear.phpunit.de/PHPUnit`
+* Install [Composer][]
+    * `wget http://getcomposer.org/composer.phar`
+* Let [Composer][] install all dependencies
+    * `php composer.phar install`
+* And finally run [PHPUnit][]
+    * `phpunit`
+
 ## License
 
     Copyright 2009-2012 Michael Contento <michaelcontento@gmail.com>
@@ -37,3 +59,5 @@ to your original object, but only once for each method and argument combination.
     limitations under the License.
 
   [CacheDecorator]: https://github.com/michaelcontento/CacheDecorator
+  [Composer]: https://github.com/composer/composer
+  [PHPUnit]: https://github.com/sebastianbergmann/phpunit
