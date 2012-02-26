@@ -18,10 +18,8 @@ to your original object (read: all magic methods like `__set`, `__get`,
     echo $dt->answerToTheUltimateQuestionOfLifeTheUniverseAndEverything();
     
     // Should be less than 7.5 million years ;)
-    $fastDt = new CacheDecorator\Decorator(
-        $dt, 
-        new CacheDecorator\Engine\MemoryCache()
-    );
+    $cache = new CacheDecorator\Engine\MemoryCache();
+    $fastDt = new CacheDecorator\Decorator($dt, $cache);
     echo $fastDt->answerToTheUltimateQuestionOfLifeTheUniverseAndEverything();
 
 ## License
