@@ -13,6 +13,11 @@ use Cake;
 class CakePhp implements Adapter 
 {
     /**
+     * @var array
+     */
+    public static $FALSE_REPLACEMENT = array(__CLASS__, false);
+
+    /**
      * @var string
      */
     private $config;
@@ -33,8 +38,14 @@ class CakePhp implements Adapter
     public function get($key) 
     {
         $result = Cake::read($key, $this->config);
+
         if ($result === false) {
             throw new Exception("Cache miss for key '$key'.");
+        }
+
+        // Detect our "special false"
+        if ($result === self::$FALSE_REPLACEMENT) {
+            return false;
         }
 
         return $result;
@@ -47,6 +58,12 @@ class CakePhp implements Adapter
      */
     public function set($key, $value) 
     {
+        // Replace false with our known special value. This allows us to cache 
+        // false, even if CakePhp uses false as cache miss indicator. 
+        if ($value === false) {
+            $value = self::$FALSE_REPLACEMENT;
+        }
+
         Cake::write($key, $value, $this->config);
     }
 }

@@ -48,11 +48,31 @@ class CakePhpTest extends \PHPUnit_Framework_TestCase
 
     public function testCacheExceptionOnFalseResult()
     {
-        Cake::$nextResult = false;
+        Cake::$nextResult = false; 
         $cache = new CakePhp();
 
         $this->setExpectedException("CacheDecorator\Engine\Exception");
         $cache->get("key");
+    }
+
+    public function testCacheReturnsFalseWithSpecialFalseReplacement()
+    {
+        Cake::$nextResult = CakePhp::$FALSE_REPLACEMENT; 
+        $cache = new CakePhp();
+        $this->assertFalse($cache->get("key"));
+    }
+
+    public function testCacheStoreFalseAsSpecialReplacement()
+    {
+        $cache = new CakePhp();
+        $cache->set("key", false);
+
+        $this->assertCount(1, Cake::$stack);
+
+        list($method, $key, $value) = Cake::$stack[0];
+        $this->assertEquals("set", $method);
+        $this->assertEquals("key", $key);
+        $this->assertEquals(CakePhp::$FALSE_REPLACEMENT, $value);
     }
 
     public function testShouldPassTheKeyOnGet()
